@@ -49,6 +49,17 @@ var IonicGoogleMapsApp = angular.module('IonicGoogleMapsApp', ['ionic', 'IonicGo
         }
       })
 
+      .state('app.eventdetails', {
+        url: "/eventsdetails/:eventId",
+        views: {
+          'menuContent': {
+            //params: { eventId: null },
+            templateUrl: "templates/event-details.html",
+            controller: 'FbEventsDetailsCtrl'
+          }
+        }
+      })
+
       .state('app.map', {
         url: "/map",
         views: {

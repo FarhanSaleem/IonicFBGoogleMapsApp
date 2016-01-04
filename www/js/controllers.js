@@ -66,7 +66,7 @@ angular.module('IonicGoogleMapsApp.controllers', ['ngOpenFB'])
     $scope.session = Session.get({sessionId: $stateParams.sessionId});
   })
 
-  .controller('FbEventsCtrl', function ($scope, $http, ngFB) {
+  .controller('FbEventsCtrl', function ($scope, $state, $http, ngFB) {
 
     ngFB.init({
       appId: '958409767551345',
@@ -82,8 +82,8 @@ angular.module('IonicGoogleMapsApp.controllers', ['ngOpenFB'])
 
 
     var getEvents = ngFB.api({
-      path: '/search?q=Atlanta&type=event&center=33.958281, -84.353616&distance=1000&'
-
+      //path: '/search?q=social&type=event&center=33.958281, -84.353616&distance=1000&'
+      path: '/search?type=event&q=*&center=33.93, -84.37&distance=1000&'
     })
       .then(function (response) {
         $scope.events = response.data;
@@ -92,16 +92,40 @@ angular.module('IonicGoogleMapsApp.controllers', ['ngOpenFB'])
         console.log(error);
       });
 
-    //$scope.getEvents();
+    $scope.getEventDetails = function(eventId) {
+
+      //Pass event Id to get facebook event specific info like attending count/cover photo etc
+      $state.go('app.eventdetails', { eventId : eventId});
+    }
+
+  })
+
+  .controller('FbEventsDetailsCtrl', function ($scope, $state, $stateParams, $http, ngFB) {
+
+    ngFB.init({
+      appId: '958409767551345',
+      /* accessToken: 'CAANnqymZBgXEBAM8EqwvvZC4cUqgHQ5iQpZAdh7GiMCeV3lixf1goD0TSw4TjSjTIu1hW5ytaQOj9PMB5P1H3sGgYNKCYoVgxuisPnSZAAwm45FNpDWUVXOzmhocMPSMxpz7ZA6rD6ZAHroeeiZCwdQ7U2ZA3xaKzqfRZAaqnsTwMLYAQ60CjYmCd9hbx3b9CTdMcI3zDDZAgS8wZDZD',*/
+      status: true,
+      xfbml: true
+    });
 
 
-    /*$http.get('').then(function(response) {
+    //Pass appId and secret into app
+    var app_id = '958409767551345';
+    var app_secret = '2e9cf3b3d5c7a9c0b6c14883f8b6b090';
 
-     $scope.events = response.data.events;
 
-     }, function(error) {
-     console.log('Error: ', error)
-     })*/
+    var getEventDetails = ngFB.api({
+      path: '/' + $stateParams.eventId + '?fields=attending_count,cover,name,description'
+    })
+      .then(function (response) {
+        $scope.eventDetails = response;
+        console.log(response);
+      }, function (error) {
+        console.log(error);
+      });
+
+    //$scope.getEventDetails();
   })
 
   .controller('ProfileCtrl', function ($scope, ngFB) {

@@ -1,13 +1,25 @@
-<ion-view view-title="Atlanta ">
+<ion-view view-title="Events Close to Me :)">
   <ion-content overflow-scroll="true">
     <ion-list>
-      <ion-item ng-repeat="event in events"
-        >Event: {{event.name}}
+      <!--<ion-item ng-repeat="event in events">
+        Event: {{event.name}}
         <br/>
         Desc: {{event.description}}
         <br/>
         Start Time: {{event.start_time | date:'yyyy-MM-dd HH:mm:ss Z'}}
-      </ion-item>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>-->
+      <a class="item item-icon-right" ng-repeat="event in events"
+         ng-click="getEventDetails(event.id)">
+        Event: {{event.name}}
+        <br/>
+        Desc: {{event.description}}
+        <br/>
+        Location: {{event.place.location.city}}
+        <br/>
+        Start Time: {{event.start_time | date:'short'}}
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </a>
     </ion-list>
   </ion-content>
 </ion-view>
